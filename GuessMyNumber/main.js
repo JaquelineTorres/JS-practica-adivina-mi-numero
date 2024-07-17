@@ -1,24 +1,32 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
+//console.log(numbers);
+document.getElementById("start-game").addEventListener('click', () => {
 
-setupCounter(document.querySelector('#counter'))
+  let guess;
+
+  let left = 0;
+  let right = numbers.length - 1;
+
+  const guessNumber = () => {
+    while (left <= right) {
+      guess = Math.floor((left + right) / 2);
+      let userResponse = confirm(`¿Es este tu número: ${guess}?`);
+
+      if (userResponse) {
+        document.getElementById('game-container').innerHTML = `<h2>Tu número es el ${guess}, excelente decisión</h2>`;
+        return;
+      } else {
+        let higherOrLower = confirm('¿Tu número es mayor que este?');
+        if (higherOrLower) {
+          left = guess + 1;
+        } else {
+          right = guess - 1;
+        }
+      }
+    }
+  };
+
+  guessNumber();
+});
